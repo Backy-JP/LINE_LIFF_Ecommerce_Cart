@@ -12,6 +12,7 @@ export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [err, setErr] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const c = getCart();
@@ -58,6 +59,56 @@ setProducts(withUrls);
       }
     })();
   }, []);
+
+  // 🔥 新增：頁面載入時檢查是否需要送出訂單（從 LINE 登入回來）
+  useEffect(() => {
+    const shouldSubmit = sessionStorage.getItem("pending_order_submit");
+    if (shouldSubmit === "true") {
+      sessionStorage.removeItem("pending_order_submit");
+      // 延遲一下，確保購物車資料已載入
+      setTimeout(() => {
+        handleSubmitOrder();
+      }, 500);
+    }
+  }, []);
+
+  const handleSubmitOrder = async () => {
+    if (submitting) return;
+    setSubmitting(true);
+
+    try {
+      const line_user_id = await ensureLineLogin();
+      const items = getCart().map((x) => ({ product_id: x.product_id, qty: x.qty }));
+
+      if (items.length === 0) {
+        alert("購物車是空的");
+        return;
+      }
+
+      const res = await fetch("/api/orders/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ line_user_id, items }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error ?? "Submit failed");
+
+      clearCart();
+      alert(`已送出訂單！ID: ${json.order_id}`);
+      window.location.href = "/";
+    } catch (e: any) {
+      console.error("Submit order error:", e);
+      // 如果是 LINE 登入跳轉，設定標記
+      if (e?.message?.includes("Redirecting to LINE login")) {
+        sessionStorage.setItem("pending_order_submit", "true");
+      } else {
+        alert(e?.message ?? String(e));
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const rows = useMemo(() => {
     const mapQty = new Map(cart.map((x) => [x.product_id, x.qty]));
@@ -326,37 +377,19 @@ setProducts(withUrls);
 
           <div style={{ marginTop: 16 }}>
             <button
-              onClick={async () => {
-                try {
-                  const line_user_id = await ensureLineLogin();
-                  const items = getCart().map((x) => ({ product_id: x.product_id, qty: x.qty }));
-
-                  const res = await fetch("/api/orders/submit", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ line_user_id, items }),
-                  });
-
-                  const json = await res.json();
-                  if (!res.ok) throw new Error(json?.error ?? "Submit failed");
-
-                  clearCart();
-                  alert(`已送出訂單！ID: ${json.order_id}`);
-                  window.location.href = "/";
-                } catch (e: any) {
-                  alert(e?.message ?? String(e));
-                }
-              }}
+              onClick={handleSubmitOrder}
+              disabled={submitting}
               style={{
                 width: "100%",
                 padding: "12px 14px",
                 borderRadius: 12,
                 border: "1px solid #ddd",
-                cursor: "pointer",
+                cursor: submitting ? "not-allowed" : "pointer",
                 fontWeight: 800,
+                opacity: submitting ? 0.6 : 1,
               }}
             >
-              送出訂單（下一步）
+              {submitting ? "處理中..." : "送出訂單（下一步）"}
             </button>
           </div>
         </>

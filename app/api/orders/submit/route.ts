@@ -22,7 +22,10 @@ export async function POST(req: Request) {
     .select("id")
     .single();
 
-  if (orderErr) return NextResponse.json({ error: orderErr.message }, { status: 400 });
+  if (orderErr) {
+    console.error("Order insert error:", orderErr);
+    return NextResponse.json({ error: orderErr.message }, { status: 400 });
+  }
 
   const payload = items.map((x: any) => ({
     order_id: order.id,
@@ -31,7 +34,11 @@ export async function POST(req: Request) {
   }));
 
   const { error: itemsErr } = await supabase.from("order_items").insert(payload);
-  if (itemsErr) return NextResponse.json({ error: itemsErr.message }, { status: 400 });
+  if (itemsErr) {
+    console.error("Order items insert error:", itemsErr);
+    return NextResponse.json({ error: itemsErr.message }, { status: 400 });
+  }
 
+  console.log(`✅ Order created: ${order.id} for user ${line_user_id}`);
   return NextResponse.json({ ok: true, order_id: order.id });
 }
