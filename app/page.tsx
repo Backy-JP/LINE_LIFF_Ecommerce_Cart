@@ -173,6 +173,7 @@ export default function HomePage() {
                     style={{
                       fontSize: 13,
                       color: "#999",
+                      textDecoration: "line-through",
                       marginBottom: 4
                     }}
                   >

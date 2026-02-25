@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 export async function POST(req: Request) {
-  const { line_user_id, items } = await req.json();
+  const { line_user_id, name, items } = await req.json();
 
   if (!line_user_id) {
     return NextResponse.json({ error: "Missing line_user_id" }, { status: 400 });
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
   const { data: order, error: orderErr } = await supabase
     .from("orders")
-    .insert({ line_user_id })
+    .insert({ line_user_id, name })
     .select("id")
     .single();
 
@@ -39,6 +39,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: itemsErr.message }, { status: 400 });
   }
 
-  console.log(`✅ Order created: ${order.id} for user ${line_user_id}`);
+  console.log(`✅ Order created: ${order.id} for user ${line_user_id} (${name || 'unknown'})`);
   return NextResponse.json({ ok: true, order_id: order.id });
 }

@@ -2,7 +2,7 @@
 
 import { ensureLineLogin } from "@/lib/line";
 import { getCart, updateQty, removeFromCart, clearCart, type CartItem } from "@/lib/cart";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 
 function fmt2(n: number) {
@@ -13,6 +13,56 @@ export default function CartPage() {
   const [products, setProducts] = useState<any[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmitOrder = useCallback(async () => {
+    if (submitting) return;
+    setSubmitting(true);
+
+    try {
+      const profile = await ensureLineLogin();
+      const items = getCart().map((x) => ({ product_id: x.product_id, qty: x.qty }));
+
+      if (items.length === 0) {
+        alert("購物車是空的");
+        setSubmitting(false);
+        return;
+      }
+
+      console.log("📤 送出訂單:", { 
+        userId: profile.userId, 
+        userName: profile.displayName, 
+        items 
+      });
+
+      const res = await fetch("/api/orders/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          line_user_id: profile.userId, 
+          name: profile.displayName,
+          items 
+        }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error ?? "Submit failed");
+
+      console.log("✅ 訂單成功:", json);
+      clearCart();
+      alert(`已送出訂單！ID: ${json.order_id}`);
+      window.location.href = "/";
+    } catch (e: any) {
+      console.error("❌ Submit order error:", e);
+      // 如果是 LINE 登入跳轉，設定標記
+      if (e?.message?.includes("Redirecting to LINE login")) {
+        console.log("🔄 設定 pending_order_submit 標記");
+        sessionStorage.setItem("pending_order_submit", "true");
+      } else {
+        alert(e?.message ?? String(e));
+        setSubmitting(false);
+      }
+    }
+  }, [submitting]);
 
   useEffect(() => {
     const c = getCart();
@@ -63,52 +113,18 @@ setProducts(withUrls);
   // 🔥 新增：頁面載入時檢查是否需要送出訂單（從 LINE 登入回來）
   useEffect(() => {
     const shouldSubmit = sessionStorage.getItem("pending_order_submit");
+    console.log("🔍 檢查 pending_order_submit:", shouldSubmit);
+    
     if (shouldSubmit === "true") {
+      console.log("✨ 偵測到從 LINE 登入回來，準備送出訂單...");
       sessionStorage.removeItem("pending_order_submit");
       // 延遲一下，確保購物車資料已載入
       setTimeout(() => {
+        console.log("⏰ 執行延遲後的訂單送出");
         handleSubmitOrder();
-      }, 500);
+      }, 1000);
     }
-  }, []);
-
-  const handleSubmitOrder = async () => {
-    if (submitting) return;
-    setSubmitting(true);
-
-    try {
-      const line_user_id = await ensureLineLogin();
-      const items = getCart().map((x) => ({ product_id: x.product_id, qty: x.qty }));
-
-      if (items.length === 0) {
-        alert("購物車是空的");
-        return;
-      }
-
-      const res = await fetch("/api/orders/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ line_user_id, items }),
-      });
-
-      const json = await res.json();
-      if (!res.ok) throw new Error(json?.error ?? "Submit failed");
-
-      clearCart();
-      alert(`已送出訂單！ID: ${json.order_id}`);
-      window.location.href = "/";
-    } catch (e: any) {
-      console.error("Submit order error:", e);
-      // 如果是 LINE 登入跳轉，設定標記
-      if (e?.message?.includes("Redirecting to LINE login")) {
-        sessionStorage.setItem("pending_order_submit", "true");
-      } else {
-        alert(e?.message ?? String(e));
-      }
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  }, [handleSubmitOrder]);
 
   const rows = useMemo(() => {
     const mapQty = new Map(cart.map((x) => [x.product_id, x.qty]));
