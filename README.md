@@ -313,7 +313,10 @@ npm run lint     # 程式碼檢查
 
 ## 👨‍💻 作者
 
-**Pei**
+**Pei (Backy-JP)**
+
+- **Email**: jiapei311157@gmail.com
+- **GitHub**: [@Backy-JP](https://github.com/Backy-JP)
 
 ---
 
