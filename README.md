@@ -8,6 +8,30 @@
 ![Supabase](https://img.shields.io/badge/Supabase-2.97.0-green)
 ![LINE LIFF](https://img.shields.io/badge/LINE_LIFF-2.27.3-00B900)
 
+## 📱 功能展示
+
+<table>
+  <tr>
+    <td width="33%" align="center">
+      <img src="./docs/images/line-richmenu.png" width="250" alt="LINE 圖文選單"><br/>
+      <b>1️⃣ LINE 圖文選單</b><br/>
+      <sub>在聊天室點擊「Pei Shop」進入商場</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./docs/images/product-page.png" width="250" alt="商品頁面"><br/>
+      <b>2️⃣ 商品展示頁面</b><br/>
+      <sub>響應式卡片設計，清楚展示價格與商品資訊</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./docs/images/cart-page.png" width="250" alt="購物車頁面"><br/>
+      <b>3️⃣ 購物車與訂單</b><br/>
+      <sub>送出訂單自動觸發 LINE Login 並儲存至資料庫</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
 ## ✨ 功能特色
 
 - 🛍️ **商品展示**：響應式網格佈局，支援圖片、價格、庫存顯示
@@ -215,7 +239,7 @@ const { signedUrls } = await res.json();
 ## 🛠️ 常見問題
 
 **圖片無法顯示**
-- 檢查 Storage bucket 名稱 (`product-images`)
+- 檢查 Storage bucket 名稱 (`Product-images`)
 - 確認圖片路徑正確
 - 檢查 Console 錯誤訊息
 
