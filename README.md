@@ -1,8 +1,8 @@
-# 🛒 Pei Shop - 購物車系統
+# Pei Shop - 購物車系統
 
 <div align="center">
 
-## 🚀 LINE x AI 全自動代購革命
+## LINE x AI 全自動代購革命
 
 **📸 拍照 → 🤖 AI 辨識 → 🛒 購物車 → 📄 PDF 訂單**
 
@@ -10,12 +10,12 @@
 
 </div>
 
-> 💡 **完整解決方案**  
+> **完整解決方案**  
 > 本專案是 **LINE x AI 自動化代購生態系統** 的核心購物車模組，需配合以下專案完整運作：
 > 
-> 1. **[AI-Driven Product Ingestion Pipeline](https://github.com/Backy-JP/AI-Driven_Product_Ingestion_Pipeline_with_LINE_LIFF_and_n8n)** - 📸 拍照上傳 + 🤖 AI 商品辨識與資料自動化建檔
-> 2. **[LINE LIFF Ecommerce Cart](https://github.com/Backy-JP/LINE_LIFF_Ecommerce_Cart)** - 🛒 本專案：LINE 購物車與訂單系統
-> 3. **[LINE PDF Generator](https://github.com/Backy-JP/LINE_PDF_Generator)** - 📄 一鍵生成購物清單 PDF
+> 1. **[AI-Driven Product Ingestion Pipeline](https://github.com/Backy-JP/AI-Driven_Product_Ingestion_Pipeline_with_LINE_LIFF_and_n8n)** - 拍照上傳 + AI 商品辨識與資料自動化建檔
+> 2. **[LINE LIFF Ecommerce Cart](https://github.com/Backy-JP/LINE_LIFF_Ecommerce_Cart)** - 本專案：LINE 購物車與訂單系統
+> 3. **[LINE PDF Generator](https://github.com/Backy-JP/LINE_PDF_Generator)** - 一鍵生成購物清單 PDF
 > 
 > **從商品拍攝到訂單下載，全程 LINE 完成，無需跳轉外部平台！**
 
@@ -29,7 +29,7 @@
 ![Supabase](https://img.shields.io/badge/Supabase-2.97.0-green)
 ![LINE LIFF](https://img.shields.io/badge/LINE_LIFF-2.27.3-00B900)
 
-## 📱 功能展示
+## 功能展示
 
 <table>
   <tr>
@@ -53,35 +53,35 @@
 
 ---
 
-## ✨ 功能特色
+## 功能特色
 
-- 🛍️ **商品展示**：響應式網格佈局，支援圖片、價格、庫存顯示
-- 🛒 **購物車管理**：本地儲存（localStorage），支援增刪改數量
-- 👤 **LINE 登入**：整合 LIFF SDK，自動處理登入流程與用戶資料快取
-- 📦 **訂單處理**：與 LINE 用戶綁定，完整的訂單建立流程
-- 🖼️ **圖片管理**：Supabase Storage + 批次簽名 URL，優化載入效能
+- **商品展示**：響應式網格佈局，支援圖片、價格、庫存顯示
+- **購物車管理**：本地儲存（localStorage），支援增刪改數量
+- **LINE 登入**：整合 LIFF SDK，自動處理登入流程與用戶資料快取
+- **訂單處理**：與 LINE 用戶綁定，完整的訂單建立流程
+- **圖片管理**：Supabase Storage + 批次簽名 URL，優化載入效能
 
-## 🔗 生態系統整合
+## 生態系統整合
 
 ### 完整代購流程
 
 ```mermaid
 graph LR
-    A[📸 現場拍照] --> B[🤖 AI 辨識商品]
-    B --> C[💾 自動建檔]
-    C --> D[🛒 LINE 購物車]
-    D --> E[✅ 送出訂單]
-    E --> F[📄 生成 PDF]
-    F --> G[📲 LINE 下載]
+    A[現場拍照] --> B[AI 辨識商品]
+    B --> C[自動建檔]
+    C --> D[LINE 購物車]
+    D --> E[送出訂單]
+    E --> F[生成 PDF]
+    F --> G[LINE 下載]
 ```
 
 | 階段 | 專案 | 功能 |
 |------|------|------|
-| 📸 **商品上架** | [AI Product Ingestion](https://github.com/Backy-JP/AI-Driven_Product_Ingestion_Pipeline_with_LINE_LIFF_and_n8n) | 拍照上傳 → n8n 工作流 → GPT-4 Vision 辨識 → 自動建立商品資料 |
-| 🛒 **購物下單** | [LINE Ecommerce Cart](https://github.com/Backy-JP/LINE_LIFF_Ecommerce_Cart) | LINE 圖文選單 → 商品瀏覽 → 購物車 → 訂單送出 |
-| 📄 **訂單輸出** | [LINE PDF Generator](https://github.com/Backy-JP/LINE_PDF_Generator) | 一鍵下載購物清單 PDF，方便代購結帳與對帳 |
+| **商品上架** | [AI Product Ingestion](https://github.com/Backy-JP/AI-Driven_Product_Ingestion_Pipeline_with_LINE_LIFF_and_n8n) | 拍照上傳 → n8n 工作流 → GPT-4 Vision 辨識 → 自動建立商品資料 |
+| **購物下單** | [LINE Ecommerce Cart](https://github.com/Backy-JP/LINE_LIFF_Ecommerce_Cart) | LINE 圖文選單 → 商品瀏覽 → 購物車 → 訂單送出 |
+| **訂單輸出** | [LINE PDF Generator](https://github.com/Backy-JP/LINE_PDF_Generator) | 一鍵下載購物清單 PDF，方便代購結帳與對帳 |
 
-### 🎯 核心優勢
+### 核心優勢
 
 ✅ **零學習成本** - 客戶在熟悉的 LINE 環境完成所有操作  
 ✅ **極致自動化** - AI 辨識商品資訊，無需手動建檔  
@@ -89,7 +89,7 @@ graph LR
 ✅ **專業輸出** - PDF 購物清單，適合實體店面結帳  
 ✅ **易於擴展** - 模組化設計，可依需求調整功能
 
-## 🏗️ 技術架構
+## 技術架構
 
 - **前端**：Next.js 16 (App Router) + React 19 + TypeScript
 - **資料庫**：Supabase (PostgreSQL)
@@ -117,7 +117,7 @@ pei-shop/
 └── package.json
 ```
 
-## 🚀 快速開始
+## 快速開始
 
 ### 1. 安裝依賴
 
@@ -208,7 +208,7 @@ npm run dev
 
 開啟 [http://localhost:3000](http://localhost:3000)
 
-## 📚 核心功能
+## 核心功能
 
 ### 購物車管理
 
@@ -242,7 +242,7 @@ const res = await fetch('/api/sign-batch', {
 const { signedUrls } = await res.json();
 ```
 
-## 📝 API 端點
+## API 端點
 
 ### POST `/api/orders/submit`
 
@@ -272,7 +272,7 @@ const { signedUrls } = await res.json();
 { "signedUrls": { "path1.jpg": "https://...", ... } }
 ```
 
-## 🚢 部署
+## 部署
 
 ### Vercel（推薦）
 
@@ -285,7 +285,7 @@ const { signedUrls } = await res.json();
 
 支援 Next.js 的平台皆可：Netlify, AWS Amplify, Railway, Render
 
-## 🛠️ 常見問題
+## 常見問題
 
 **圖片無法顯示**
 - 檢查 Storage bucket 名稱 (`Product-images`)
@@ -303,7 +303,7 @@ const { signedUrls } = await res.json();
 npx ngrok http 3000
 ```
 
-## 📦 建置與檢查
+## 建置與檢查
 
 ```bash
 npm run build    # 建置生產版本
@@ -311,7 +311,7 @@ npm start        # 啟動生產伺服器
 npm run lint     # 程式碼檢查
 ```
 
-## 👨‍💻 作者
+## 作者
 
 **Pei (Backy-JP)**
 
